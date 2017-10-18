@@ -1,5 +1,5 @@
 {
-  "name": "deputadosInfoAPI",
+  "name": "deputados-info-api",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -8,7 +8,9 @@
   },
   "author": "TiagoCoelho (tiagocoelho33@gmail.com)",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "jsdom": "^11.3.0",
+    "request": "^2.83.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.3"
   }
