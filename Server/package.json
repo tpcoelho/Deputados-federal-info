@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node loader.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "TiagoCoelho (tiagocoelho33@gmail.com)",
   "license": "ISC",
   "dependencies": {
-    "jsdom": "^11.3.0",
-    "request": "^2.83.0",
     "body-parser": "^1.17.2",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "jsdom": "^11.3.0",
+    "mongoose": "^4.12.3",
+    "morgan": "^1.9.0",
+    "request": "^2.83.0"
   }
 }

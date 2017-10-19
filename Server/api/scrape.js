@@ -1,18 +1,3 @@
-// var express = require('express');
-//     routes = require('./routes/routes');
-//     bodyParser = require('body-parser');
-
-
-// var app = express();
-// app.use(bodyParser.urlencoded({extended: false}));
-// app.use(bodyParser.json());
-// app.use('/api/v0', routes);
-
-// app.listen(3333, function(){
-//     console.log('Server is running');
-// })
-
-
 const request = require('request');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -27,7 +12,7 @@ function parseDeputadoInfo(deputadoId) {
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             const dom = new JSDOM(body);
-            var temp = dom.window.document.getElementsByClassName('visualNoMarker');
+            var pageSections = dom.window.document.getElementsByClassName('visualNoMarker');
             var newDeputado = {
                 "fullname": '',
                 "bday": '',
@@ -45,7 +30,7 @@ function parseDeputadoInfo(deputadoId) {
                 "substituteCommission": '',
 
             }
-            var infoDep = temp[0];
+            var infoDep = pageSections[0];
             /** O array possui 7 elementos porem so precismos dos 5 primeiros
              * Linha 1 - nome
              * linha 2 - aniversario
@@ -74,7 +59,7 @@ function parseDeputadoInfo(deputadoId) {
             * Linha 1 - Titular das  comissões
             * linha 2 - Suplente das  comissões
             */
-            var comissoes = temp[2].children[0].getElementsByTagName("acronym");
+            var comissoes = pageSections[2].children[0].getElementsByTagName("acronym");
             for (var i = 0; i < comissoes.length; i++) {
                 if (i == (comissoes.length-1)) {
                     newDeputado.mainCommission += comissoes[i].innerHTML;
@@ -83,7 +68,7 @@ function parseDeputadoInfo(deputadoId) {
                 }
             }
             //Suplente
-            comissoes = temp[2].children[1].getElementsByTagName("acronym");
+            comissoes = pageSections[2].children[1].getElementsByTagName("acronym");
             for (var i = 0; i < comissoes.length; i++) {
                 if (i == (comissoes.length-1)) {
                     newDeputado.substituteCommission += comissoes[i].innerHTML;
@@ -92,13 +77,17 @@ function parseDeputadoInfo(deputadoId) {
                 }
             }
 
-             /** Endereço para correspondência
+            /** Endereço para correspondência
             * Linha 1 - endereco
             * linha 2 - Gabinete
             * linha 3 - Cep
             */
-            
-            var endereco = temp[4].getElementsByTagName("li");
+            var indexAddress = 4;
+            if(pageSections.length > 5){
+                //has link to social media
+                indexAddress++;
+            }
+            var endereco = pageSections[indexAddress].getElementsByTagName("li");
             newDeputado.fullAddress.address = endereco[0].innerHTML;
             newDeputado.fullAddress.complement = endereco[1].innerHTML.trim().split("&nbsp")[0];
             newDeputado.fullAddress.CEP = endereco[2].innerHTML;
@@ -108,11 +97,25 @@ function parseDeputadoInfo(deputadoId) {
     });
 }
 
-function salvaDeputado() {
-    request("http://localhost:3333/api/v0/ping", function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            console.log(body);
-
+function salvaDeputado(newDeputado) {
+    var options = {
+        url: 'http://localhost:3000/api/v0/addDeputado',
+        method: 'POST',
+        json: true,
+        headers: [
+          {
+            name: 'content-type',
+            value: 'application/json'
+          }
+        ],
+        body: {
+          deputado: newDeputado
+        }
+      }
+    request(options, function (error, response, body) {
+        if (error && response.statusCode != 200) {
+            console.log("Ocorreu um erro! code: "+response.statusCode);
+            console.log(error);
         }
     });
 }
@@ -121,7 +124,6 @@ request("http://www2.camara.leg.br/deputados/pesquisa", function (error, respons
     if (!error && response.statusCode == 200) {
         const dom = new JSDOM(body);
         var arraySize = dom.window.document.getElementById('deputado').length;
-        arraySize = 2;
         for (var i = 1; i < arraySize; i++) {
             var temp = dom.window.document.getElementById('deputado')[i].value;
             parseDeputadoInfo(temp.split("?")[1])
