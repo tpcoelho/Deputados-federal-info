@@ -1,0 +1,56 @@
+ <!-- Jumbotron Header -->
+<header class="jumbotron my-4">
+    <h1 class="display-3">Conheça os deputados</h1>
+    <br />
+    <p class="lead">Lista de todos os deputados. Todas informações disponivel em: http://www2.camara.leg.br/deputados/pesquisa</p>
+</header>
+
+<div class="container">
+  <div id="accordion" role="tablist">
+    <div class="card" ng-repeat="deputado in homeCtrl.deputados">
+      <div class="card-header" role="tab" id="heading{{$index}}">
+        <h5 class="mb-0">
+         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="true" aria-controls="collapse{{$index}}">{{deputado.fullname}}</button>
+        </h5>
+      </div>
+      <div id="collapse{{$index}}" class="collapse" role="tabpanel" aria-labelledby="heading{{$index}}" data-parent="#accordion">
+        <div class="card-body">
+          <div class="card-left-side">
+            <div class="deputado-item">
+                <strong>Estado: </strong> {{deputado.state}}
+            </div>
+            <div class="deputado-item">
+                <strong>Partido: </strong> {{deputado.party}}
+            </div>
+            <div class="deputado-item">
+                <strong>Situação: </strong> {{deputado.situation}}
+            </div>
+            <div class="deputado-item">
+                <strong>Legislaturas: </strong> {{deputado.period}}
+            </div>
+            <div class="deputado-item">
+                <strong>Titular das Comissões: </strong> {{deputado.mainCommission}}
+            </div>
+            <div class="deputado-item">
+                <strong>Suplente das Comissões: </strong> {{deputado.substituteCommission}}
+            </div>
+          </div>
+          <div class="card-rigth-side">
+            <div class="deputado-item">
+                <strong>Nome: </strong> {{deputado.fullname}}
+              </div>
+              <div class="deputado-item">
+                  <strong>Aniversario: </strong> {{deputado.bday}}
+              </div>
+              <div class="deputado-item">
+                  <strong>Telefone: </strong> {{deputado.phone}}
+              </div>
+              <div class="deputado-item">
+                  <strong>Endereço: </strong> {{deputado.fullAddress.address}} <br />{{deputado.fullAddress.complement}} <br />{{deputado.fullAddress.CEP}}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
