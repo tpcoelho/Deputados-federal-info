@@ -26,6 +26,16 @@ var functions = {
         })
       }
     },
+
+    getDeputado: function(req, res){
+      Deputado.find({}, function(err, data) {
+        if (data) {
+            res.json(data);
+        } else {
+            res.status(403).send({ success: false, msg: 'Erro. ' + err });
+        }
+      }).sort('fullname');
+    },
     ping: function(req, res){
       // res.send("pong!", 200);
       res.status(200).send("pong!");

@@ -99,7 +99,7 @@ function parseDeputadoInfo(deputadoId) {
 
 function salvaDeputado(newDeputado) {
     var options = {
-        url: 'http://localhost:3000/api/v0/addDeputado',
+        url: 'http://localhost:3000/api/v0/deputados',
         method: 'POST',
         json: true,
         headers: [
