@@ -13,7 +13,7 @@ var should = chai.should();
 chai.use(chaiHttp);
 
 
-describe('Deputado', function() {
+describe('Server', function() {
 
     Deputado.collection.drop();
     
