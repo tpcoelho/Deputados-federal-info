@@ -1,5 +1,5 @@
 # Deputados-federal-info
-Node.js, ExpressJS, JSdom, request, Mongodb, Angular
+Node.js, ExpressJS, JSdom, request, Mongodb, Angular, mocha, chai, chai-http, istanbul
 
 ## UP & RUNNING
 * `git clone` or fork it
@@ -18,4 +18,11 @@ Node.js, ExpressJS, JSdom, request, Mongodb, Angular
 ## Routes
 * POST     		/deputados          (save deputado in mongodb)    
 * GET     		/deputados          (Return array of deputados from mongodb)             
-* GET     		/ping               (request to test the server)      		  
+* GET     		/ping               (request to test the server)      	
+
+### Unit test for the server part
+Unit test using mocha, chai, chai-http, istanbul
+* Go inside of folder Server `cd Server/`
+* `npm test`
+or
+* `npm run coverage`

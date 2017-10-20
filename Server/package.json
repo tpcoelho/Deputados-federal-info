@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node loader.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test --exit",
+    "coverage": "istanbul cover _mocha test -- --exit && open coverage/lcov-report/index.html"
   },
   "author": "TiagoCoelho (tiagocoelho33@gmail.com)",
   "license": "ISC",
@@ -15,5 +16,11 @@
     "mongoose": "^4.12.3",
     "morgan": "^1.9.0",
     "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.1"
   }
 }
