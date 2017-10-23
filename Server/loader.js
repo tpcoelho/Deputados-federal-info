@@ -1,2 +1,2 @@
 const server = require('./api/server')
-require('./api/scrape')
+require('./api/scrape2')

@@ -21,8 +21,6 @@ mongoose.connect(config.database, {
 //If mongo is up, start the server
 mongoose.connection.on('open', function(){
     console.log('Mongo is connected');
-
-    
     var port = process.env.PORT || 3000
     server.set('port', port);
     server.listen(server.get('port'), function(){
