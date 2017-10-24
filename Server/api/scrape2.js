@@ -18,7 +18,7 @@ function initScrape(){
                 //Pesquisa o deputdo pela sua id
                 deputadosIds.push(temp.split("?")[1]);
             }
-            console.log("teste")
+            
             arraySize = deputadosIds.length;
             scrapingDeputados();
         }
@@ -66,10 +66,12 @@ function parseDeputadoInfo(deputadoId) {
         request(options, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 const dom = new JSDOM(body);
+
                 var pageSections = dom.window.document.getElementsByClassName('visualNoMarker');
                 //JSON exemplo
                 var newDeputado = {
                     "fullname": '',
+                    "photo": '',
                     "bday": '',
                     "party": '',
                     "state": '',
@@ -146,8 +148,12 @@ function parseDeputadoInfo(deputadoId) {
                 newDeputado.fullAddress.address = endereco[0].innerHTML;
                 newDeputado.fullAddress.complement = endereco[1].innerHTML.trim().split("&nbsp")[0];
                 newDeputado.fullAddress.CEP = endereco[2].innerHTML;
-    
-                resolve(newDeputado);
+                
+                var deputadoImg = dom.window.document.querySelector("img.image-left");
+                convertImgToBase64(deputadoImg.src, function(base64image){
+                    newDeputado.photo = base64image;
+                    resolve(newDeputado);
+                });
             }else{
                 resolve(null);
             }
@@ -187,4 +193,24 @@ function salvaDeputado(newDeputado) {
             }
         });
     });
+}
+
+function convertImgToBase64(url, callback){
+    //option resources is necessario to load img with jsdom
+    let dom= new JSDOM(``, {
+        resources: "usable"
+      });
+    var img = new dom.window.Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function() {
+      var canvas = dom.window.document.createElement('CANVAS');
+      var ctx = canvas.getContext('2d');
+      canvas.height = this.naturalHeight;
+      canvas.width = this.naturalWidth;
+      ctx.drawImage(this, 0, 0);
+      var dataURL = canvas.toDataURL("image/png"),
+      dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+      callback(dataURL); // the base64 string
+    };
+    img.src = url;
 }

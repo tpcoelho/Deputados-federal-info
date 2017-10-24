@@ -13,6 +13,7 @@ angular.
         //Variaveis
         self.deputados = [{
           "fullname": 'adolfo',
+          "photo": '',
           "bday": '',
           "party": '',
           "state": '',

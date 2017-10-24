@@ -7,6 +7,10 @@ var DeputadoSchema = new Schema({
         required: true,
         minlength: 4
     },
+    photo: {
+        type: String,
+        required: true
+    },
     bday: {
         type: String,
         required: true
